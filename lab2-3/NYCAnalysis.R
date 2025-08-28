@@ -17,7 +17,7 @@ required_packages <- c("readr", "dplyr", "ggplot2", "gridExtra", "corrplot",
 install_if_missing(required_packages)
 
 # Load the dataset
-df <- read_csv('lab2/yellow_tripdata_sample.csv')
+df <- read_csv('yellow_tripdata_sample.csv')
 cat("Shape =", nrow(df), "rows x", ncol(df), "columns\\n")
 cat("Columns:", paste(colnames(df), collapse = ", "), "\\n")
 cat("Initial rows:\\n")
@@ -171,12 +171,13 @@ create_violin_plots <- function() {
   
   for (i in seq_along(numerical_cols)) {
     col <- numerical_cols[i]
-    p <- ggplot(df_clean, aes_string(y = col)) +
-      geom_violin(fill = "lightgreen", alpha = 0.7) +
-      labs(title = paste("Violin Plot:", gsub("_", " ", stringr::str_to_title(col))),
-           y = gsub("_", " ", stringr::str_to_title(col))) +
-      theme_minimal() +
-      theme(plot.title = element_text(face = "bold", size = 12))
+      p <- ggplot(df_clean, aes(x = "", y = .data[[col]])) +
+     geom_violin(fill = "lightgreen", alpha = 0.7) +
+     labs(title = paste("Violin Plot:", gsub("_", " ", stringr::str_to_title(col))),
+       y = gsub("_", " ", stringr::str_to_title(col)),
+       x = "") +
+     theme_minimal() +
+     theme(plot.title = element_text(face = "bold", size = 12))
     plots[[i]] <- p
   }
   
