@@ -1,0 +1,77 @@
+Download spark with
+cd /tmp
+wget https://archive.apache.org/dist/spark/spark-2.4.8/spark-2.4.8-bin-hadoop2.6.tgz
+
+Untar it 
+tar -xzf spark-2.4.8-bin-hadoop2.6.tgz
+sudo mv spark-2.4.8-bin-hadoop2.6 /usr/local/spark
+
+Change ownership for future
+sudo chown -R $USER:$USER /usr/local/spark
+
+Provide paths in bashrc  	nano ~/.bashrc
+# ========= SPARK ENV VARIABLES =========
+export SPARK_HOME=/usr/local/spark
+export PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
+
+Load new bashrc 	source ~/.bashrc
+
+Copy the template and edit the new file.
+
+cd /usr/local/spark/conf
+cp spark-env.sh.template spark-env.sh
+nano spark-env.sh
+
+Content: Add the following lines to the end of spark-env.sh.
+
+#!/usr/bin/env bash
+
+# Set the Hadoop Configuration Directory
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+
+# Add Hadoop libraries to Spark's classpath
+# This ensures Spark uses your Hadoop 2.6.5 libraries
+export SPARK_DIST_CLASSPATH=$(hadoop classpath)
+
+# Explicitly set JAVA_HOME for Spark
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+Copy hive-site.xml This is the simplest way. Spark will automatically load it.
+
+cp $HIVE_HOME/conf/hive-site.xml /usr/local/spark/conf/
+
+Copy MySQL Connector JAR Spark needs the exact same JDBC driver that Hive uses. You correctly placed it in $HIVE_HOME/lib. We must also place it in Spark's jars directory.
+
+cp /usr/local/hive/lib/mysql-connector-java-8.0.28.jar /usr/local/spark/jars/
+
+Make virtual environment for setup
+
+python3 -m venv pyspark_env
+source pyspark_env/bin/activate
+pip install jupyter notebook findspark
+jupyter notebook
+
+Bug fixes for python
+# First, install the tool for managing PPAs
+sudo apt update
+sudo apt install software-properties-common -y
+
+# Add the deadsnakes PPA
+sudo add-apt-repository ppa:deadsnakes/ppa -y
+sudo apt update
+sudo apt install python3.7 python3.7-venv -y
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

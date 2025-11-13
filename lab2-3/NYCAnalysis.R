@@ -1,6 +1,9 @@
 # U23AI118
 # Lab 2: Analyzing NYC Dataset - R Version
 
+#cd "lab2-3"
+#& "C:\Program Files\R\R-4.5.1\bin\R.exe" --vanilla -e "user_lib <- file.path(Sys.getenv('USERPROFILE'), 'Documents', 'R', 'win-library', '4.5'); .libPaths(user_lib); source('NYCAnalysis.R')"
+
 # Install required packages if not already installed
 install_if_missing <- function(packages) {
   for (pkg in packages) {
